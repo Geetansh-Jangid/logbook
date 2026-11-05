@@ -1,0 +1,47 @@
+---
+import { clsx, withBase } from '../utils/site';
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+  href: string;
+  external?: boolean;
+};
+
+const { href, external, class: className, ...props } = Astro.props;
+
+const isExternal = external || href.startsWith('http://') || href.startsWith('https://');
+
+const targetUrl = isExternal ? href : withBase(href);
+const normalizedCurrent = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const normalizedTarget = targetUrl.replace(/\/+$/, '') || '/';
+
+const isExactRoot = normalizedTarget === '/' || normalizedTarget === (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+const isLogbookTarget = normalizedTarget === '/logbook' || normalizedTarget.endsWith('/logbook') || normalizedTarget === '/';
+const isLogbookCurrent = normalizedCurrent === '/' || normalizedCurrent.startsWith('/logbook') || normalizedCurrent.startsWith('/writings');
+
+const isActive = !isExternal && (
+  (isLogbookTarget && isLogbookCurrent && !normalizedCurrent.startsWith('/observations')) ||
+  (!isLogbookTarget && (
+    isExactRoot
+      ? normalizedCurrent === normalizedTarget
+      : normalizedCurrent === normalizedTarget || normalizedCurrent.startsWith(normalizedTarget + '/')
+  ))
+);
+---
+
+<a
+  href={targetUrl}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  class={clsx(
+    'text-base sm:text-lg font-medium transition-colors duration-150 inline-flex items-center gap-1.5 cursor-pointer no-underline',
+    isActive
+      ? 'text-[var(--color-text)] font-semibold'
+      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]',
+    className
+  )}
+  {...props}
+>
+  <slot />
+  {isExternal && <span class="text-xs sm:text-sm opacity-60">↗</span>}
+</a>
