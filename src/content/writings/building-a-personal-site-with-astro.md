@@ -9,7 +9,6 @@ featured: false
 ---
 
 Every few years I rebuild this site. The stack changes, the design changes, but the goal stays the same: a place to publish that I control, that loads quickly, and that will still make sense in a decade.
-
 This time I settled on Astro. It is a static site generator, which means the output is just HTML, CSS, and a little JavaScript. No database, no server rendering, no framework runtime shipping to the browser unless I explicitly ask for it.
 
 ## Why static first
@@ -44,8 +43,6 @@ The content collection schema validates that frontmatter at build time. If I for
 Because everything is a file, the entire archive is versioned in Git. I can diff a post, revert a typo, or move the whole thing to another machine with a clone.
 
 ## The build pipeline
-
-![Astro Build & Distribution Architecture](/images/architecture.svg)
 
 At a high level, the pipeline is simple:
 

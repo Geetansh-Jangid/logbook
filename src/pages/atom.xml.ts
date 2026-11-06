@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 import { SITE_TITLE, AUTHOR, DESCRIPTION, BASE_PATH } from '../utils/site';
 
 export const GET: APIRoute = async ({ site }) => {
-  const posts = (await getCollection('writings', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = (await getCollection('logbook', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const origin = site ?? new URL('https://example.com');
   const base = new URL(BASE_PATH, origin);
   const updated = posts[0]?.data.updated ?? posts[0]?.data.date ?? new Date();
@@ -25,4 +25,4 @@ export const GET: APIRoute = async ({ site }) => {
   </feed>`;
   return new Response(xmlBody, { headers: { 'Content-Type': 'application/atom+xml; charset=utf-8' } });
 };
-function xml(value: string) { return value.replace(/[<>&'\"]/g, (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[char]!); }
+function xml(value: string) { return value.replace(/[<>&'"]/g, (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[char]!); }

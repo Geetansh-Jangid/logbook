@@ -1,20 +1,24 @@
-# Implementation notes / next steps
+# Logbook Implementation Notes
 
-This is a working visual and structural starter, not yet a production-complete publication.
+1. **Content Structure:**
+   - Articles are stored in `./content/logbook/<slug>/index.md`.
+   - Observations are stored in `./content/observations/<slug>/index.md`.
+   - Colocated assets (e.g. `./architecture.svg`) reside inside the corresponding entry's folder.
+   - Slugs are automatically computed using Astro Content Layer glob loader with custom ID generator `({ entry }) => entry.replace(/\/index\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '')`.
 
-Before public launch:
+2. **Styling and Design System:**
+   - Typography: Uncut Sans for headings and body; JetBrains Mono NF for code blocks and inline code only.
+   - Inline code is styled with high-contrast colors (`#FFA366` in dark, `#C2410C` in light).
+   - Minimalist aesthetic: sharp square corners (`border-radius: 0`) on images, diagrams, cards, and modal dialogs.
+   - Subtle minimal modal transitions (0.15s ease-out) without hover borders.
 
-1. **Full-text RSS:** The RSS endpoint now renders Markdown to HTML with `marked` and sanitizes the output before embedding it. Test image URL rewriting under both deployment base paths.
-2. **Atom feed:** Verify feed self URL and canonical IDs for both subpath and subdomain deployments.
-3. **Math:** `remark-math` and `rehype-katex` are wired into Astro's Markdown pipeline; verify equation output in production.
-4. **Footnotes:** Add a footnote plugin if needed; GFM covers tables, task lists, strikethrough and autolinks.
-5. **Image paths:** Test local images under both `/writings` and `/` base paths. Consider a custom Markdown image transformer to prefix `BASE_URL` for `/media/...` paths.
-6. **Search:** Add a small generated JSON index and client-side search only if the archive grows enough to need it.
-7. **Mermaid RSS:** Include static SVG alternatives for diagrams because feed readers don't run Mermaid JavaScript.
-8. **Validation:** Run `npm install`, `npm run check`, and `npm run build`; fix any version-specific Astro API differences before deployment.
+3. **Themes & Palette Cycling:**
+   - Default color palette is Cursor (`#14120B` dark / `#F7F7F4` light with `#FF5A00` accent).
+   - 15 available palettes: Cursor, Slate, Void, Obsidian, Ash, Charcoal, Graphite, Sepia, Sable, Noir, Fog, Steel, Stone, Silver, and Monochrome (plain black & white).
+   - 4 continuous taps on the title words "logbook" or "observations" cycles to the next theme.
+   - Long press / touch and hold resets the theme back to original (Cursor) and follows browser dark/light mode preference.
+   - Re-renders Mermaid diagrams dynamically to reflect the current palette's colors.
 
-## Deployment choice
-
-For a path under an existing site (`geetansh.tech/writings`), the simplest deployment is a separate Vercel project with `PUBLIC_BASE_PATH=/writings` only if the domain routing is configured to serve that project under the subpath. Vercel does not automatically mount a second project at a subpath; use a rewrite/reverse proxy in the main site, or deploy the publication as part of the existing Astro/Next application.
-
-For a dedicated subdomain (`writings.geetansh.tech`), a separate Vercel project is straightforward and should use `PUBLIC_BASE_PATH=/`.
+4. **Deployment:**
+   - Standard deployment under `PUBLIC_BASE_PATH=/logbook` or `PUBLIC_BASE_PATH=/`.
+   - Canonical URLs reflect `SITE_URL` with full RSS, Atom, and JSON Feed syndication.

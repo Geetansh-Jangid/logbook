@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LogItem from '../components/LogItem.astro';
 
-const logs = (await getCollection('writings', ({ data }) => !data.draft))
+const logs = (await getCollection('logbook', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 

@@ -14,6 +14,14 @@
       document.documentElement.classList.contains('dark') &&
       !document.documentElement.classList.contains('light');
 
+    const rootStyle = getComputedStyle(document.documentElement);
+    const bg = rootStyle.getPropertyValue('--bg').trim() || (isDark ? '#14120B' : '#F7F7F4');
+    const surface = rootStyle.getPropertyValue('--surface').trim() || (isDark ? '#1B1913' : '#FFFFFF');
+    const surface2 = rootStyle.getPropertyValue('--surface-2').trim() || (isDark ? '#26241E' : '#F2F1ED');
+    const text = rootStyle.getPropertyValue('--text').trim() || (isDark ? '#F5F3EB' : '#171611');
+    const accent = rootStyle.getPropertyValue('--accent').trim() || '#FF5A00';
+    const line = rootStyle.getPropertyValue('--line').trim() || (isDark ? '#302E27' : '#DAD9D4');
+
     // 1. Convert any unrendered pre blocks to wrapper elements with data-mermaid-code
     const mermaidPres = document.querySelectorAll<HTMLElement>(
       'pre[data-language="mermaid"], pre.mermaid, code.language-mermaid'
@@ -42,43 +50,24 @@
       mermaid.initialize({
         startOnLoad: false,
         theme: 'base',
-        themeVariables: isDark
-          ? {
-              darkMode: true,
-              background: '#14120B',
-              primaryColor: '#1B1913',
-              primaryTextColor: '#F5F3EB',
-              primaryBorderColor: '#FF5A00',
-              lineColor: '#FF5A00',
-              secondaryColor: '#26241E',
-              tertiaryColor: '#1B1913',
-              mainBkg: '#1B1913',
-              nodeBorder: '#FF5A00',
-              clusterBkg: '#1B1913',
-              clusterBorder: '#302E27',
-              titleColor: '#F5F3EB',
-              edgeLabelBackground: '#1B1913',
-              nodeTextColor: '#F5F3EB',
-              fontFamily: '"Uncut Sans", -apple-system, BlinkMacSystemFont, sans-serif',
-            }
-          : {
-              darkMode: false,
-              background: '#F7F7F4',
-              primaryColor: '#FFFFFF',
-              primaryTextColor: '#171611',
-              primaryBorderColor: '#FF5A00',
-              lineColor: '#FF5A00',
-              secondaryColor: '#F2F1ED',
-              tertiaryColor: '#FFFFFF',
-              mainBkg: '#FFFFFF',
-              nodeBorder: '#FF5A00',
-              clusterBkg: '#F2F1ED',
-              clusterBorder: '#DAD9D4',
-              titleColor: '#171611',
-              edgeLabelBackground: '#FFFFFF',
-              nodeTextColor: '#171611',
-              fontFamily: '"Uncut Sans", -apple-system, BlinkMacSystemFont, sans-serif',
-            },
+        themeVariables: {
+          darkMode: isDark,
+          background: bg,
+          primaryColor: surface,
+          primaryTextColor: text,
+          primaryBorderColor: accent,
+          lineColor: accent,
+          secondaryColor: surface2,
+          tertiaryColor: surface,
+          mainBkg: surface,
+          nodeBorder: accent,
+          clusterBkg: surface2,
+          clusterBorder: line,
+          titleColor: text,
+          edgeLabelBackground: surface,
+          nodeTextColor: text,
+          fontFamily: '"Uncut Sans", -apple-system, BlinkMacSystemFont, sans-serif',
+        },
         securityLevel: 'loose',
       });
 
@@ -182,57 +171,41 @@
     height: auto;
   }
 
-  /* High contrast styling for Mermaid in light theme */
+  /* Contrast styling for Mermaid diagrams */
   html.light .mermaid-diagram svg text,
   html.light .mermaid-diagram svg span,
   html.light .mermaid-diagram svg .label,
-  html.light .mermaid-diagram svg .edgeLabel {
-    fill: #171611 !important;
-    color: #171611 !important;
-    font-weight: 500;
-  }
-
-  html.light .mermaid-diagram svg .node rect,
-  html.light .mermaid-diagram svg .node circle,
-  html.light .mermaid-diagram svg .node ellipse,
-  html.light .mermaid-diagram svg .node polygon,
-  html.light .mermaid-diagram svg .node path {
-    fill: #FFFFFF !important;
-    stroke: #FF5A00 !important;
-    stroke-width: 1.5px !important;
-  }
-
-  /* High contrast styling for Mermaid in dark theme */
+  html.light .mermaid-diagram svg .edgeLabel,
   html.dark .mermaid-diagram svg text,
   html.dark .mermaid-diagram svg span,
   html.dark .mermaid-diagram svg .label,
   html.dark .mermaid-diagram svg .edgeLabel {
-    fill: #F5F3EB !important;
-    color: #F5F3EB !important;
+    fill: var(--text) !important;
+    color: var(--text) !important;
     font-weight: 500;
   }
 
-  html.dark .mermaid-diagram svg .node rect,
-  html.dark .mermaid-diagram svg .node circle,
-  html.dark .mermaid-diagram svg .node ellipse,
-  html.dark .mermaid-diagram svg .node polygon,
-  html.dark .mermaid-diagram svg .node path {
-    fill: #1B1913 !important;
-    stroke: #FF5A00 !important;
+  .mermaid-diagram svg .node rect,
+  .mermaid-diagram svg .node circle,
+  .mermaid-diagram svg .node ellipse,
+  .mermaid-diagram svg .node polygon,
+  .mermaid-diagram svg .node path {
+    fill: var(--surface) !important;
+    stroke: var(--accent) !important;
     stroke-width: 1.5px !important;
   }
 
   /* Connectors and markers */
   .mermaid-diagram svg .edgePath path,
   .mermaid-diagram svg path.flowchart-link {
-    stroke: #FF5A00 !important;
+    stroke: var(--accent) !important;
     stroke-width: 1.5px !important;
   }
 
   .mermaid-diagram svg .marker,
   .mermaid-diagram svg marker path {
-    fill: #FF5A00 !important;
-    stroke: #FF5A00 !important;
+    fill: var(--accent) !important;
+    stroke: var(--accent) !important;
   }
 
   .diagram-error {

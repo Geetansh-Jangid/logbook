@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/site';
 
 export async function getStaticPaths() {
-  const thoughts = await getCollection('thoughts', ({ data }) => !data.draft);
+  const thoughts = await getCollection('observations', ({ data }) => !data.draft);
   return thoughts.map((entry) => ({ params: { slug: entry.id } }));
 }
 

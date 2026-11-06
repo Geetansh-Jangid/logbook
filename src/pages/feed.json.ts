@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 import { SITE_TITLE, AUTHOR, DESCRIPTION, BASE_PATH } from '../utils/site';
 
 export const GET: APIRoute = async ({ site }) => {
-  const posts = (await getCollection('writings', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = (await getCollection('logbook', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   const origin = site ?? new URL('https://example.com');
   const base = new URL(BASE_PATH, origin);
   const feed = {

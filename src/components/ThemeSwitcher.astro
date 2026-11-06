@@ -64,7 +64,8 @@
       }
       document.documentElement.dataset.theme = nextTheme;
       localStorage.setItem('theme', nextTheme);
-      window.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: nextTheme } }));
+      localStorage.setItem('theme-mode', nextTheme);
+      window.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: nextTheme, mode: nextTheme } }));
     });
   }
 

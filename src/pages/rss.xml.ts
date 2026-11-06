@@ -8,7 +8,7 @@ import { SITE_TITLE, DESCRIPTION, BASE_PATH } from '../utils/site';
 const basePath = BASE_PATH;
 
 export async function GET(context: APIContext) {
-  const posts = (await getCollection('writings', ({ data }) => !data.draft))
+  const posts = (await getCollection('logbook', ({ data }) => !data.draft))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const items = await Promise.all(posts.map(async (post) => {

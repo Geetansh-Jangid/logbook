@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LogItem from '../components/LogItem.astro';
 
-const logs = (await getCollection('writings', ({ data }) => !data.draft))
+const logs = (await getCollection('logbook', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
@@ -13,7 +13,7 @@ const logs = (await getCollection('writings', ({ data }) => !data.draft))
 >
   <div class="flex flex-col w-full gap-10">
     <header>
-      <h1 class="type-page-title">logbook</h1>
+      <h1 class="type-page-title" data-theme-trigger="true">logbook</h1>
     </header>
 
     <div class="flex flex-col w-full">

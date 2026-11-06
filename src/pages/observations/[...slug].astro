@@ -5,8 +5,8 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import { clsx, getCategoryColor, withBase } from '../../utils/site';
 
 export async function getStaticPaths() {
-  const thoughts = await getCollection('thoughts', ({ data }) => !data.draft);
-  return thoughts.map((entry) => ({
+  const observations = await getCollection('observations', ({ data }) => !data.draft);
+  return observations.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));
